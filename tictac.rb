@@ -1,23 +1,5 @@
 # frozen_string_literal: false
 
-# create board for start of game
-class Board
-  def initialize
-    @board_hash = { A1: '-', A2: '-', A3: '-', B1: '-', B2: '-', B3: '-',
-                    C1: '-', C2: '-', C3: '-' }
-    @game_over = 0
-  end
-
-  def display_board
-    puts '   1   2   3 '
-    puts "A: #{@board_hash[:A1]} | " + "#{@board_hash[:A2]} | " + @board_hash[:A3].to_s
-    puts '   --+---+--'
-    puts "B: #{@board_hash[:B1]} | " + "#{@board_hash[:B2]} | " + @board_hash[:B3].to_s
-    puts '   --+---+--'
-    puts "C: #{@board_hash[:C1]} | " + "#{@board_hash[:C2]} | " + @board_hash[:C3].to_s
-  end
-end
-
 # create Player class to allow turn input/space choice and to update/switch the
 # active player
 class Player
@@ -29,24 +11,6 @@ class Player
     puts "#{@active_player}'s will go first..."
   end
 
-  def choose_space
-    puts 'Choose a space between A1 and C3 that has not been played yet:'
-    @play = gets.chomp.upcase   
-  end
-
-  def update_space
-    begin
-      @turn = @board_hash.fetch_values(@play)
-    rescue
-      puts 'Invalid input...'
-      choose_space #max three times then end game????
-    else
-      if @turn != '-'
-        puts 'Space already played. Choose again...'
-      else @board_hash[@play.to_sym] = @active_player
-        switch_active_player
-    end
-
   def switch_active_player
     case @active_player
     when 'X' then 'O'
@@ -55,11 +19,57 @@ class Player
   end
 end
 
+# create board for start of game
+class Board
+  attr_accessor :board_hash
+  def initialize
+    @board_hash = { A1: '-', A2: '-', A3: '-', B1: '-', B2: '-', B3: '-',
+                    C1: '-', C2: '-', C3: '-' }
+  end
+
+  def display_board
+    puts '   1   2   3 '
+    puts "A: #{@board_hash[:A1]} | " + "#{@board_hash[:A2]} | " + @board_hash[:A3].to_s
+    puts '   --+---+--'
+    puts "B: #{@board_hash[:B1]} | " + "#{@board_hash[:B2]} | " + @board_hash[:B3].to_s
+    puts '   --+---+--'
+    puts "C: #{@board_hash[:C1]} | " + "#{@board_hash[:C2]} | " + @board_hash[:C3].to_s
+  end
+
+  def choose_space
+    puts 'Choose a space between A1 and C3 that has not been played yet:'
+    @play = gets.chomp.upcase
+  end
+
+  def update_space
+    begin
+      @turn = @current_game.board_hash.fetch_values(@play.to_sym)
+    rescue
+      puts "#{@play} is invalid input..."
+      puts @play.inspect ## troubleshoot
+      puts @play.to_sym.inspect ## troubleshoot
+      puts @board_hash.inspect # troubleshoot
+      choose_space #max three times then end game????
+    else
+      if @turn != '-'
+        puts 'Space already played. Choose again...'
+      else @board_hash[@play.to_sym] = @active_player
+        switch_active_player
+      end
+    end
+  end
+end
+
 class Game
   def initialize
+    @game_over = 0
     @current_game = Board.new
     @current_game.display_board
-    Player.new
+    @starting_player = Player.new
+    while @game_over == 0
+      @current_game.choose_space
+      @current_game.update_space
+    end
   end
 
   # def game_over
@@ -67,14 +77,16 @@ class Game
   # end
 
   def play_again?
+    @game_over = 1
     puts "Type 'y' if you would like to play again and any other key to exit :"
     @play_again = gets.chomp.downcase
     case @play_again
     when 'y'
       Game.new
     end
+  end
 
-    def check_for_win
+  def check_for_win
     if @board_hash[:A1] != '-' &&
        [@board_hash[:A1], @board_hash[:A2], @board_hash[:A3]].uniq.length == 1 ||
        [@board_hash[:A1], @board_hash[:B1], @board_hash[:C1]].uniq.length == 1 ||
