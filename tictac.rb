@@ -82,6 +82,7 @@ class Game
   end
 
   def choose_space
+    puts "\n#{@starting_player.active_player}'s turn..."
     puts 'Choose a space between A1 and C3 that has not been played yet:'
     @play = gets.chomp.upcase
   end
