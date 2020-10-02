@@ -70,8 +70,8 @@ class Player
 
   def switch_active_player
     case @active_player
-    when 'X' then 'O'
-    else 'X'
+    when 'X' then @active_player = 'O' # added "@active_player ="
+    else @active_player = 'X' # added "@active_player ="
     end
   end
 end
