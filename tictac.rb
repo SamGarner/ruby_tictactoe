@@ -91,12 +91,11 @@ class Game
     begin
       @turn = @current_game.board_hash.fetch_values(@play.to_sym) # note - this grabs an array, not just the value!
     rescue
-      puts "#{@play} is invalid input..."
-      choose_space # max three times then end game????
+      puts "\n#{@play} is invalid input... Try again:\n\n"
+      #choose_space # max three times then end game????
     else
       if @turn[0] != '-'
-        puts 'Space already played. Choose again...'
-        choose_space
+        puts "\nSpace already played. Choose again...\n\n"
       else @current_game.board_hash[@play.to_sym] = @starting_player.active_player
         @starting_player.switch_active_player # removed the 'active player between starting player and .switch_acive_player'
       end
