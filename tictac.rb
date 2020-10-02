@@ -22,7 +22,8 @@ class Board
     @play_again = gets.chomp.downcase
     case @play_again
     when 'y'
-      Game.new
+      active_game = Game.new
+      active_game.play_game
     end
   end
 
