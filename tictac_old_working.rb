@@ -32,27 +32,34 @@ class Board
        ([@board_hash[:A1], @board_hash[:A2], @board_hash[:A3]].uniq.length == 1 ||
        [@board_hash[:A1], @board_hash[:B1], @board_hash[:C1]].uniq.length == 1 ||
        [@board_hash[:A1], @board_hash[:B2], @board_hash[:C3]].uniq.length == 1)
+       puts "board_hash[:A1] != '-'"
        puts "\n#{@board_hash[:A1]}'s win !!"
        play_again?
     elsif @board_hash[:B2] != '-' &&
        ([@board_hash[:B2], @board_hash[:A2], @board_hash[:C2]].uniq.length == 1 ||
        [@board_hash[:B2], @board_hash[:A3], @board_hash[:C1]].uniq.length == 1 ||
        [@board_hash[:B2], @board_hash[:B1], @board_hash[:B3]].uniq.length == 1)
+       puts "board_hash[:B1] != '-'"
+       puts "#{@board_hash[:B2].inspect}"
        puts "\n#{@board_hash[:B2]}'s win !!"
        play_again?
     elsif @board_hash[:C3] != '-' &&
        ([@board_hash[:C3], @board_hash[:A3], @board_hash[:B3]].uniq.length == 1 ||
        [@board_hash[:C3], @board_hash[:C1], @board_hash[:C2]].uniq.length == 1)
+       puts "board_hash[:C3] != '-'"
        puts "\n#{@board_hash[:C3]}'s win !!"
        play_again?
     elsif !@board_hash.has_value?('-')
       puts "Game over - it's a draw !"
       play_again?
+    # else
+    #   choose_space
     end
   end
 end
 
 # create Player class to allow turn input/space choice and to update/switch the
+# active player
 class Player
   attr_accessor :active_player
 
@@ -64,7 +71,7 @@ class Player
 
   def switch_active_player
     case @active_player
-    when 'X' then @active_player = 'O' # added "@active_player =" otherwise will just return, not set
+    when 'X' then @active_player = 'O' # added "@active_player ="
     else @active_player = 'X' # added "@active_player ="
     end
   end
@@ -81,6 +88,10 @@ class Game
     @starting_player = Player.new
   end
 
+  # def game_over
+  #   @game_over = 1
+  # end
+
   def choose_space
     puts 'Choose a space between A1 and C3 that has not been played yet:'
     @play = gets.chomp.upcase
@@ -88,9 +99,19 @@ class Game
 
   def update_space
     begin
+      #@turn = @current_game.board_hash.fetch_values(@play.to_sym)
       @turn = @current_game.board_hash.fetch_values(@play.to_sym) # note - this grabs an array, not just the value!
+      puts @current_game.board_hash
+      puts @current_game.board_hash.fetch_values(@play.to_sym)
+      puts @turn.inspect
+      puts @turn.class
+      puts @turn[0]
+      puts @starting_player.active_player
     rescue
       puts "#{@play} is invalid input..."
+      # puts @play.inspect ## troubleshoot
+      # puts @play.to_sym.inspect ## troubleshoot
+      # puts @current_game.board_hash.inspect # troubleshoot
       choose_space # max three times then end game????
     else
       if @turn[0] != '-'
@@ -109,13 +130,13 @@ class Game
       @current_game.display_board
       @current_game.check_for_win
     end
+    #play_again?
   end
 end
 
 active_game = Game.new
 active_game.play_game
 
-# lessons:::
 # array.sample
 # single quotes preferred if no interpolation
 # .to_s preferred to interpolation if only getting the hash value
