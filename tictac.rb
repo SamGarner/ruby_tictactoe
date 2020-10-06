@@ -2,7 +2,10 @@
 
 # create board for start of game
 class Board
-  attr_accessor :board_hash
+  attr_reader :board_hash 
+  # why does 'reader' work for this and accessor isn't needed when we're updating values?
+  # is it because the @current_game Board that the hash is being updated in is being 
+  # created within the Game class itself ?
   def initialize
     @board_hash = { A1: '-', A2: '-', A3: '-', B1: '-', B2: '-', B3: '-',
                     C1: '-', C2: '-', C3: '-' }
@@ -54,7 +57,7 @@ end
 
 # create Player class to allow turn input/space choice and to update/switch the
 class Player
-  attr_accessor :active_player
+  attr_reader :active_player # don't need accessor, just reader...
 
   def initialize
     @active_player = ['X','O'].sample
@@ -72,7 +75,7 @@ end
 
 # Game class comment
 class Game
-  attr_reader :current_game
+  #attr_reader :current_game # game works without this...
 
   def initialize
     @game_over = 0
