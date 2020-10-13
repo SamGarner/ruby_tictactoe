@@ -66,10 +66,11 @@ class Player
   end
 
   def switch_active_player
-    case @active_player
-    when 'X' then @active_player = 'O' # added "@active_player =" otherwise will just return, not set
-    else @active_player = 'X' # added "@active_player ="
-    end
+    # case @active_player
+    # when 'X' then @active_player = 'O' # added "@active_player =" otherwise will just return, not set
+    # else @active_player = 'X' # added "@active_player ="
+    # end
+    @active_player = @active_player == 'X' ? 'O' : 'X'
   end
 end
 
@@ -119,6 +120,8 @@ active_game = Game.new
 active_game.play_game
 
 # lessons:::
-# array.sample
+# array.sample - returns a random element or n random elements from the array
 # single quotes preferred if no interpolation
 # .to_s preferred to interpolation if only getting the hash value
+# to check that 3,4, + items all the same...can put them in an array together and then
+#   check that the length of uniq items is 1 - used for checking for winning combos
