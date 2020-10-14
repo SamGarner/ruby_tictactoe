@@ -20,18 +20,6 @@ class Board
     puts "C: #{@board_hash[:C1]} | " + "#{@board_hash[:C2]} | " + @board_hash[:C3].to_s
   end
 
-  # def play_again?
-  #   puts "Type 'y' if you would like to play again and any other key to exit :"
-  #   @play_again = gets.chomp.downcase
-  #   case @play_again
-  #   when 'y'
-  #     active_game = Game.new
-  #     active_game.play_game
-  #   # else
-  #   #   @current_game.game_over = 1
-  #   end
-  # end
-
   def check_for_win
     if @board_hash[:A1] != '-' &&
        ([@board_hash[:A1], @board_hash[:A2], @board_hash[:A3]].uniq.length == 1 ||
@@ -112,8 +100,6 @@ class Game
     when 'y'
       active_game = Game.new
       active_game.play_game
-    # else
-    #   @current_game.game_over = 1
     end
   end
 
