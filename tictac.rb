@@ -37,22 +37,18 @@ class Board
        ([@board_hash[:A1], @board_hash[:A2], @board_hash[:A3]].uniq.length == 1 ||
        [@board_hash[:A1], @board_hash[:B1], @board_hash[:C1]].uniq.length == 1 ||
        [@board_hash[:A1], @board_hash[:B2], @board_hash[:C3]].uniq.length == 1)
-       puts "\n#{@board_hash[:A1]}'s win !!"
-       # play_again?
+      puts "\n#{@board_hash[:A1]}'s win !!"
     elsif @board_hash[:B2] != '-' &&
-       ([@board_hash[:B2], @board_hash[:A2], @board_hash[:C2]].uniq.length == 1 ||
-       [@board_hash[:B2], @board_hash[:A3], @board_hash[:C1]].uniq.length == 1 ||
-       [@board_hash[:B2], @board_hash[:B1], @board_hash[:B3]].uniq.length == 1)
-       puts "\n#{@board_hash[:B2]}'s win !!"
-       # play_again?
+          ([@board_hash[:B2], @board_hash[:A2], @board_hash[:C2]].uniq.length == 1 ||
+          [@board_hash[:B2], @board_hash[:A3], @board_hash[:C1]].uniq.length == 1 ||
+          [@board_hash[:B2], @board_hash[:B1], @board_hash[:B3]].uniq.length == 1)
+      puts "\n#{@board_hash[:B2]}'s win !!"
     elsif @board_hash[:C3] != '-' &&
-       ([@board_hash[:C3], @board_hash[:A3], @board_hash[:B3]].uniq.length == 1 ||
-       [@board_hash[:C3], @board_hash[:C1], @board_hash[:C2]].uniq.length == 1)
-       puts "\n#{@board_hash[:C3]}'s win !!"
-       # play_again?
-    elsif !@board_hash.has_value?('-')
+          ([@board_hash[:C3], @board_hash[:A3], @board_hash[:B3]].uniq.length == 1 ||
+          [@board_hash[:C3], @board_hash[:C1], @board_hash[:C2]].uniq.length == 1)
+      puts "\n#{@board_hash[:C3]}'s win !!"
+    elsif !@board_hash.value?('-')
       puts "Game over - it's a draw !"
-      # play_again?
     else 1
     end
   end
@@ -96,7 +92,7 @@ class Game
 
   def update_space
     begin
-      @turn = @current_game.board_hash.fetch_values(@play.to_sym) # note - this grabs an array, not just the value!
+      @turn = @current_game.board_hash.fetch_values(@play.to_sym) # note - this grabs an array of value(s), not just the value!
     rescue
       puts "\n#{@play} is invalid input... Try again:\n\n"
       #choose_space # max three times then end game????
@@ -142,5 +138,7 @@ active_game.play_game
 # .to_s preferred to interpolation if only getting the hash value
 # to check that 3,4, + items all the same...can put them in an array together and then
 #   check that the length of uniq items is 1 - used for checking for winning combos
-# switch_active_player method 'direct assignment' -- see rubocop note: Check for 
+# switch_active_player method 'direct assignment' -- see rubocop note: Check for
 # if and case statements where each branch is used for assignment to the same variable when using the return of the condition can be used instead.
+# '@game_over = 1 if @current_game.check_for_win != 1' providing output and updating variable in one line
+# Hash.value? preferable to Hash.has_value?
