@@ -53,17 +53,12 @@ class Player
   end
 
   def switch_active_player
-    # case @active_player
-    # when 'X' then @active_player = 'O' # added "@active_player =" otherwise will just return, not set
-    # else @active_player = 'X' # added "@active_player ="
-    # end
     @active_player = @active_player == 'X' ? 'O' : 'X'
   end
 end
 
 # Game class comment
 class Game
-  #attr_reader :current_game # game works without this...
 
   def initialize
     @game_over = 0
@@ -83,12 +78,11 @@ class Game
       @turn = @current_game.board_hash.fetch_values(@play.to_sym) # note - this grabs an array of value(s), not just the value!
     rescue
       puts "\n#{@play} is invalid input... Try again:\n\n"
-      #choose_space # max three times then end game????
     else
       if @turn[0] != '-'
         puts "\nSpace already played. Choose again...\n\n"
       else @current_game.board_hash[@play.to_sym] = @starting_player.active_player
-        @starting_player.switch_active_player # removed the 'active player between starting player and .switch_acive_player'
+        @starting_player.switch_active_player
       end
     end
   end
@@ -108,7 +102,6 @@ class Game
       choose_space
       update_space
       @current_game.display_board
-      # @current_game.check_for_win
       @game_over = 1 if @current_game.check_for_win != 1
     end
     play_again?
